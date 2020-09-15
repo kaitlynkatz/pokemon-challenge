@@ -12,7 +12,8 @@
     "watch": "npm run setup && npm run css && npx webpack --config webpack-serve.config --progress",
     "watchTest": "karma start",
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "prepare": "npm run snyk-protect",
+    "deploy": "gh-pages -d bin"
   },
   "keywords": [
     "coveo",
@@ -55,6 +56,7 @@
   },
   "snyk": true,
   "dependencies": {
+    "gh-pages": "^3.1.0",
     "snyk": "^1.291.0"
   }
 }
