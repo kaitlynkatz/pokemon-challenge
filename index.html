@@ -4,6 +4,7 @@
     <meta charset="UTF-8" >
     <meta name="viewport" content="width=device-width, height=device-height" >
     <title>Pokemon Challenge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ranchers&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/CoveoFullSearch.css"/>
     <link rel="stylesheet" href="./css/coveoextension.css"/>
     <script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.9659/2/js/CoveoJsSearch.js"
@@ -28,6 +29,11 @@
           return result;
         }
 
+        var altResultLinkRedirect = function(e, result) {
+          e.preventDefault();
+          window.location.href = result.clickUri.match(/https:\/\/pokemondb\.net\/pokedex\/.+(?=:)/)[0]
+        }
+
         Coveo.SearchEndpoint.configureCloudV2Endpoint("pokemonchallengegeafcm1t", "xxda065e3e-760e-4dd1-8461-4f1873b8ab21", "https://platformqa.cloud.coveo.com/rest/search")
         Coveo.init(document.body, {
           weightFacetSlider: {
@@ -38,19 +44,22 @@
           },
           numberFacetSlider: {
             getSteps: numberSteps
+          },
+          altResultLink: {
+            onClick: altResultLinkRedirect
           }
         });
       })
     </script>
   </head>
   <body id="search" class='CoveoSearchInterface' data-enable-history="true">
-    <div class="CoveoFolding"></div>
+    <div class="CoveoFoldingForThread" data-range="0"></div>
     <div class="CoveoAnalytics"></div>
     <div class="coveo-tab-section">
-      <a class="CoveoTab" data-id="All" data-caption="All Content"></a>
+      <a class="CoveoTab" data-id="All" data-caption="Pokémon Index"></a>
     </div>
     <div class="coveo-search-section">
-      <div class="CoveoSearchbox" data-enable-omnibox="true" data-number-of-suggestions="3" data-enable-query-suggest-addon="true">
+      <div class="CoveoSearchbox" data-enable-omnibox="true" data-number-of-suggestions="3" data-enable-query-suggest-addon="true" data-trigger-query-on-clear="true">
         <div class="CoveoFieldSuggestions" data-field="@name" data-header-title="Pokemon Name" data-number-of-suggestions="2"></div>
       </div>
     </div>
@@ -86,16 +95,60 @@
         </div>
         <div class="CoveoHiddenQuery"></div>
         <div class="CoveoErrorReport" data-pop-up="false"></div>
-        <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true">
+        <script id="altform" class="result-template" type="text/html" data-layout="list">
+          <div class="coveo-result-frame">
+            <div class="coveo-result-cell" style="vertical-align: top;padding-left: 16px;">
+              <div class="coveo-result-row" style="margin-top:0;">
+                <div class="coveo-result-cell" style="vertical-align:top;font-size:24px;" role="heading" aria-level="2">
+                  <a class="CoveoResultLink" id="altResultLink"></a>
+                </div>
+              </div>
+              <div class="coveo-result-row" style="margin-top:10px;">
+                <div class="coveo-result-cell">
+                  <span class="CoveoFieldValue" data-field="@type" data-split-values="true" data-text-caption="Type(s):"></span>
+                </div>
+              </div>
+              <div class="coveo-result-row" style="margin-top:10px;">
+                <div class="coveo-result-cell">
+                  <span class="CoveoFieldValue" data-field="@height" data-text-caption="Height:"></span>
+                  <span class="CoveoText" data-value="m" data-margin-left="0" data-margin-right="25px"></span>
+                  <span class="CoveoFieldValue" data-field="@weight" data-text-caption="Weight:"></span>
+                  <span class="CoveoText" data-value="kg"></span>
+                </div>
+              </div>
+              <div class="coveo-result-row" style="margin-top:10px;">
+                <div class="coveo-result-cell">
+                  <div class="CoveoMissingTerms"></div>
+                </div>
+              </div>
+            </div>
+            <div class="coveo-result-cell" style="vertical-align: top;padding-left: 16px;padding-right:100px;">
+              <span class="CoveoFieldValue" data-field="@picture" data-html-value="true" data-helper="image" data-helper-options-height="100"></span>
+            </div>
+          </div>
+        </script>
+        <div class="CoveoResultList" style="margin-top:0px;" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true">
+          <script id="main" class="result-template" type="text/html" data-condition="childResults.length>0">
+            <div class="coveo-result-frame">
+              <div class="CoveoTemplateLoader" data-template-id="Default"></div>
+              <div class="coveo-result-row">
+                <div class="coveo-result-cell">
+                  <span class="CoveoResultFolding" data-result-template-id="altform" data-less-caption="Hide" data-more-caption="More Forms" data-normal-caption="Alternate Forms" data-one-result-caption="Displaying the only alternate form of this Pokémon"></span>
+                </div>
+              </div>
+            </div>
+          </script>
           <script id="Default" class="result-template" type="text/html" data-layout="list">
             <div class="coveo-result-frame">
-              <div class="coveo-result-cell" style="vertical-align:top;text-align:center;width:32px;">
-                <span class="CoveoFieldValue" data-field="@number" data-text-caption="#"></span>
-              </div>
               <div class="coveo-result-cell" style="vertical-align: top;padding-left: 16px;">
                 <div class="coveo-result-row" style="margin-top:0;">
-                  <div class="coveo-result-cell" style="vertical-align:top;font-size:16px;" role="heading" aria-level="2">
+                  <div class="coveo-result-cell" style="vertical-align:top;font-size:36px;" role="heading" aria-level="2">
                     <a class="CoveoResultLink"></a>
+                  </div>
+                </div>
+                <div class="coveo-result-row" style="margin-top:10px;">
+                  <div class="coveo-result-cell">
+                    <span class="CoveoFieldValue" data-field="@number" data-text-caption="#"></span>
                   </div>
                 </div>
                 <div class="coveo-result-row" style="margin-top:10px;">
@@ -124,7 +177,7 @@
                 </div>
               </div>
               <div class="coveo-result-cell" style="vertical-align: top;padding-left: 16px;">
-                <span class="CoveoFieldValue" data-field="@picture" data-html-value="true" data-helper="image" data-helper-options-height="150"></span>
+                <span class="CoveoFieldValue" data-field="@picture" data-html-value="true" data-helper="image" data-helper-options-height="175"></span>
               </div>
             </div>
           </script>
